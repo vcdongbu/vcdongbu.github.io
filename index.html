@@ -39,7 +39,7 @@
             <h1 class="text-xl font-bold text-center tracking-wide">🏐 DONGBU ARCHIVE</h1>
         </header>
 
-        <!-- ⭐️ 카테고리 탭 (가이드 탭 추가) -->
+        <!-- 카테고리 탭 -->
         <div class="flex justify-center bg-white shadow-sm mb-4 text-sm sm:text-base">
             <button id="tab-대회영상" onclick="filterCategory('대회영상')" class="tab-btn flex-1 py-3 font-semibold text-blue-600 border-b-2 border-blue-600 focus:outline-none">대회영상</button>
             <button id="tab-친선경기" onclick="filterCategory('친선경기')" class="tab-btn flex-1 py-3 font-semibold text-gray-500 hover:text-blue-600 focus:outline-none">친선경기</button>
@@ -49,7 +49,7 @@
 
         <div id="status-message" class="text-center text-gray-500 mt-10">데이터를 불러오는 중입니다...</div>
         
-        <!-- 영상 리스트 (또는 가이드 화면이 렌더링될 공간) -->
+        <!-- 영상 리스트 -->
         <div id="video-list" class="max-w-md mx-auto px-4 space-y-4"></div>
     </div>
 
@@ -112,17 +112,17 @@
                             tournament: (row['Tournament'] || row['tournament'] || row['대회명'] || '').trim(),
                             fullVideo: (row['FullVideo'] || row['풀영상'] || '').trim(),
                             memo: (row['Memo'] || row['memo'] || row['설명'] || '').trim(),
+                            // ⭐️ 에러 방지를 위해 열 이름 인식 강화 (띄어쓰기나 한글도 인식)
                             sets: [
-                                row['Set1'] || row['set1'], 
-                                row['Set2'] || row['set2'], 
-                                row['Set3'] || row['set3'], 
-                                row['Set4'] || row['set4'], 
-                                row['Set5'] || row['set5']
+                                row['Set1'] || row['set1'] || row['Set 1'] || row['1세트'] || '', 
+                                row['Set2'] || row['set2'] || row['Set 2'] || row['2세트'] || '', 
+                                row['Set3'] || row['set3'] || row['Set 3'] || row['3세트'] || '', 
+                                row['Set4'] || row['set4'] || row['Set 4'] || row['4세트'] || '', 
+                                row['Set5'] || row['set5'] || row['Set 5'] || row['5세트'] || ''
                             ].filter(Boolean) 
                         };
                     }).filter(v => v.rawDate); 
 
-                    // 최신순 정렬
                     allVideos.sort((a, b) => b.rawDate.localeCompare(a.rawDate));
 
                     document.getElementById('status-message').classList.add('hidden'); 
@@ -136,7 +136,6 @@
         }
 
         function filterCategory(categoryName) {
-            // 탭 디자인 초기화 및 활성화
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
                 btn.classList.add('text-gray-500');
@@ -150,7 +149,6 @@
             const listContainer = document.getElementById('video-list');
             listContainer.innerHTML = ''; 
 
-            // ⭐️ 가이드 탭 선택 시 가이드 화면 렌더링
             if (categoryName === '가이드') {
                 listContainer.innerHTML = `
                     <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
@@ -158,8 +156,6 @@
                             <h2 class="text-lg font-bold text-blue-900">📝 영상 등록 가이드 (관리자용)</h2>
                         </div>
                         <div class="p-5 space-y-6 text-gray-700 text-sm">
-                            
-                            <!-- 1단계: 유튜브 업로드 -->
                             <div>
                                 <h3 class="font-bold text-base text-gray-900 mb-2">1. 유튜브 업로드</h3>
                                 <ul class="list-disc list-inside space-y-1 ml-1 text-gray-600">
@@ -168,8 +164,6 @@
                                     <li>기존의 '부분공개목록' 재생목록에 추가합니다.</li>
                                 </ul>
                             </div>
-
-                            <!-- 2단계: 구글 시트 연결 -->
                             <div>
                                 <h3 class="font-bold text-base text-gray-900 mb-2">2. 구글 시트 작성</h3>
                                 <p class="mb-3 text-gray-600">아래 관리용 구글 시트에 접속하여 새로운 행에 데이터를 입력합니다.</p>
@@ -178,32 +172,24 @@
                                     관리용 DB 시트 열기
                                 </a>
                             </div>
-
-                            <!-- 3단계: 입력 규칙 -->
                             <div>
                                 <h3 class="font-bold text-base text-gray-900 mb-2">3. 데이터 입력 규칙</h3>
                                 <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-2.5">
-                                    <p><strong class="text-indigo-600">Category:</strong> <span class="text-gray-600">대회영상 / 친선경기 / 연습영상</span> 중 택 1</p>
-                                    <p><strong class="text-indigo-600">Date:</strong> <span class="text-gray-600">6자리 날짜 입력 (예: 260724)</span></p>
-                                    <p><strong class="text-indigo-600">Tournament:</strong> <span class="text-gray-600">대회명 (친선경기, 연습영상은 비움)</span></p>
+                                    <p><strong class="text-indigo-600">Category:</strong> <span class="text-gray-600">대회영상 / 친선경기 / 연습영상</span></p>
+                                    <p><strong class="text-indigo-600">Date:</strong> <span class="text-gray-600">6자리 날짜 (예: 260724)</span></p>
                                     <p><strong class="text-indigo-600">Opponent:</strong> <span class="text-gray-600">상대팀명 (연습영상은 '수비 훈련' 등 주제 입력)</span></p>
-                                    <p><strong class="text-indigo-600">FullVideo:</strong> <span class="text-gray-600">풀영상 유튜브 링크 (없으면 비움)</span></p>
-                                    <p><strong class="text-indigo-600">Set1 ~ Set5:</span> <span class="text-gray-600">분할된 영상 유튜브 링크 (해당 칸에 입력)</span></p>
-                                    <p><strong class="text-indigo-600">Memo:</strong> <span class="text-gray-600">경기/훈련 요약 및 코멘트 (없으면 비움)</span></p>
+                                    <p><strong class="text-indigo-600">Tournament:</strong> <span class="text-gray-600">대회명 (연습영상은 훈련 그룹명)</span></p>
+                                    <p><strong class="text-indigo-600">FullVideo:</strong> <span class="text-gray-600">풀영상 링크</span></p>
+                                    <p><strong class="text-indigo-600">Set1 ~ Set5:</span> <span class="text-gray-600">분할된 영상 링크 (해당 칸에 각각 입력)</span></p>
+                                    <p><strong class="text-indigo-600">Memo:</strong> <span class="text-gray-600">경기/훈련 요약 코멘트</span></p>
                                 </div>
-                            </div>
-                            
-                            <div class="flex items-start bg-yellow-50 text-yellow-800 p-4 rounded-lg text-xs leading-relaxed">
-                                <span class="mr-2 text-lg">⚠️</span>
-                                <p>구글 시트에 입력한 내용은 저장 즉시 아카이브 웹사이트에 <strong>자동으로 반영</strong>됩니다. 기존 데이터를 삭제하거나 형식을 변경하지 않도록 주의해 주세요.</p>
                             </div>
                         </div>
                     </div>
                 `;
-                return; // 가이드 탭 렌더링 후 함수 종료 (비디오 리스트 렌더링 방지)
+                return; 
             }
 
-            // 가이드 탭이 아닐 경우 비디오 리스트 렌더링
             const filtered = allVideos.filter(video => video.category === categoryName);
 
             if(filtered.length === 0) {
@@ -215,7 +201,6 @@
             let previousTournament = ''; 
 
             filtered.forEach(video => {
-                
                 if (video.year && video.year !== previousYear) {
                     listContainer.innerHTML += `
                         <div class="flex items-center my-6">
@@ -251,6 +236,7 @@
                     `;
                 }
                 
+                // 1. 풀영상 버튼 생성
                 if (video.fullVideo) {
                     contentHTML += `
                         <a href="${video.fullVideo}" target="_blank" class="group block bg-blue-50 border border-blue-200 p-3 mt-2 rounded-lg shadow-sm flex justify-between items-center hover:bg-blue-100 transition-all duration-200">
@@ -260,8 +246,14 @@
                     `;
                 }
 
+                // ⭐️ 풀영상과 세트 영상이 둘 다 있을 경우 예쁜 점선 구분선 추가
+                if (video.fullVideo && video.sets.length > 0) {
+                    contentHTML += `<div class="w-full border-t-2 border-gray-200 border-dashed my-4"></div>`;
+                }
+
                 const setLabel = categoryName === '연습영상' ? '번 클립' : '세트';
 
+                // 2. 세트별(클립별) 영상 버튼 생성
                 video.sets.forEach((link, index) => {
                     contentHTML += `
                         <a href="${link}" target="_blank" class="group block bg-white border border-gray-200 p-3 mt-2 rounded-lg shadow-sm flex justify-between items-center hover:border-indigo-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
