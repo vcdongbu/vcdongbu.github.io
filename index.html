@@ -73,11 +73,6 @@
     </div>
 
     <script>
-        // 카카오톡 인앱 브라우저 안드로이드 강제 우회 스크립트
-        const userAgent = navigator.userAgent.toLowerCase();
-        if (userAgent.includes('kakaotalk') && userAgent.includes('android')) {
-            location.href = 'intent://' + location.href.replace(/https?:\/\//i, '') + '#Intent;scheme=http;package=com.android.chrome;end';
-        }
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRek-y-oVDapZn2wwNwb0L1VsYzbzY9V1qTU1H9pneHCDVKsXAgqMR3mbLUWw3U18GpTd5-XePrpsZp/pub?output=csv";
         const ENCODED_PW = "dGVhbWRi"; 
         
