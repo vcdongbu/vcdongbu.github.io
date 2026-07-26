@@ -6,16 +6,15 @@
     <title>김해 동부배구클럽 여자팀 아카이브</title>
 
     <!-- ⭐️ 1. 웹 브라우저 탭 배구공 아이콘 (Favicon) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏐</text></svg>">
-
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%2250%22 y=%2250%22 font-size=%2280%22 text-anchor=%22middle%22 dominant-baseline=%22central%22>🏐</text></svg>">
     <!-- ⭐️ 2. 카카오톡 인앱 브라우저 강제 외부 브라우저(크롬, 사파리) 우회 스크립트 -->
     <script>
         const userAgent = navigator.userAgent.toLowerCase();
         if (userAgent.includes('kakaotalk')) {
             const targetUrl = location.href;
             if (userAgent.includes('android')) {
-                // 안드로이드: 크롬 브라우저로 강제 전환
-                location.href = 'intent://' + targetUrl.replace(/https?:\/\//i, '') + '#Intent;scheme=https;package=com.android.chrome;end';
+                // 안드로이드: 기기에 설정된 '기본 인터넷 브라우저'로 강제 전환
+                location.href = 'intent://' + targetUrl.replace(/https?:\/\//i, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;end';
             } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
                 // iOS(아이폰): 사파리 브라우저로 강제 전환
                 location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(targetUrl);
