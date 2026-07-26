@@ -4,6 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>김해 동부배구클럽 여자팀 아카이브</title>
+
+    <!-- ⭐️ 1. 웹 브라우저 탭 배구공 아이콘 (Favicon) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏐</text></svg>">
+
+    <!-- ⭐️ 2. 카카오톡 인앱 브라우저 강제 외부 브라우저(크롬, 사파리) 우회 스크립트 -->
+    <script>
+        const userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.includes('kakaotalk')) {
+            const targetUrl = location.href;
+            if (userAgent.includes('android')) {
+                // 안드로이드: 크롬 브라우저로 강제 전환
+                location.href = 'intent://' + targetUrl.replace(/https?:\/\//i, '') + '#Intent;scheme=https;package=com.android.chrome;end';
+            } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
+                // iOS(아이폰): 사파리 브라우저로 강제 전환
+                location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(targetUrl);
+            }
+        }
+    </script>
+
     <!-- 디자인 툴 (Tailwind) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- CSV 파싱 도구 -->
@@ -54,6 +73,11 @@
     </div>
 
     <script>
+        // 카카오톡 인앱 브라우저 안드로이드 강제 우회 스크립트
+        const userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.includes('kakaotalk') && userAgent.includes('android')) {
+            location.href = 'intent://' + location.href.replace(/https?:\/\//i, '') + '#Intent;scheme=http;package=com.android.chrome;end';
+        }
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRek-y-oVDapZn2wwNwb0L1VsYzbzY9V1qTU1H9pneHCDVKsXAgqMR3mbLUWw3U18GpTd5-XePrpsZp/pub?output=csv";
         const ENCODED_PW = "dGVhbWRi"; 
         
@@ -163,7 +187,7 @@
                                 <ul class="list-disc list-inside space-y-1 ml-1 text-gray-600">
                                     <li>팀 유튜브 계정으로 로그인합니다.</li>
                                     <li>영상 업로드 시 반드시 <strong class="text-red-500">『일부 공개』</strong>로 설정하세요.</li>
-                                    <li>해당 영상의 카테고리에 맞는 기존의 재생목록에 추가합니다.</li>
+                                    <li>기존의 '부분공개목록' 재생목록에 추가합니다.</li>
                                 </ul>
                             </div>
                             <div>
@@ -179,17 +203,12 @@
                                 <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-2.5">
                                     <p><strong class="text-indigo-600">Category:</strong> <span class="text-gray-600">대회영상 / 친선경기 / 연습영상</span></p>
                                     <p><strong class="text-indigo-600">Date:</strong> <span class="text-gray-600">6자리 날짜 (예: 260724)</span></p>
-                                    <p><strong class="text-indigo-600">Tournament:</strong> <span class="text-gray-600">대회명 (연습영상은 훈련 그룹명)</span></p>
+                                    <p><strong class="text-indigo-600">Tournament:</strong> <span class="text-gray-600">대회명 (친선경기, 연습영상은 빈칸)</span></p>
                                     <p><strong class="text-indigo-600">Opponent:</strong> <span class="text-gray-600">상대팀명 (연습영상은 '수비 훈련' 등 주제 입력)</span></p>
                                     <p><strong class="text-indigo-600">Memo:</strong> <span class="text-gray-600">경기/훈련 요약 코멘트</span></p>
-                                    <p><strong class="text-indigo-600">FullVideo:</strong> <span class="text-gray-600">풀영상 링크</span></p>
+                                    <p><strong class="text-indigo-600">FullVideo:</strong> <span class="text-gray-600">풀영상 링크 (풀영상 아닐 시 빈칸)</span></p>
                                     <p><strong class="text-indigo-600">Set1 ~ Set5:</strong> <span class="text-gray-600">분할된 영상 링크 (해당 칸에 각각 입력)</span></p> 
                                 </div>
-                            </div>
-                            
-                            <div class="flex items-start bg-yellow-50 text-yellow-800 p-4 rounded-lg text-xs leading-relaxed">
-                                <span class="mr-2 text-lg">⚠️</span>
-                                <p>구글 시트에 입력한 내용은 저장 즉시 아카이브 웹사이트에 <strong>자동으로 반영</strong>됩니다. 기존 데이터를 삭제하거나 형식을 변경하지 않도록 주의해 주세요! </p>
                             </div>
                         </div>
                     </div>
